@@ -16,7 +16,7 @@
 
 const params = new URLSearchParams(window.location.search);
 
-fetch('http://alkemy-disney-api.herokuapp.com/movies', {
+fetch('https://alkemy-disney-api.herokuapp.com/movies', {
     headers: {
     'Content-Type': 'application/json',
     'Authorization': "Bearer " + params.get('token'),
@@ -35,7 +35,7 @@ function printMovies(movies) {
   const container = document.getElementById('container')
      movies.forEach(movie => {
 
-      fetch('http://alkemy-disney-api.herokuapp.com/movies/' + movie.id, {
+      fetch('https://alkemy-disney-api.herokuapp.com/movies/' + movie.id, {
           headers: {
           'Content-Type': 'application/json',
           'Authorization': "Bearer " + params.get('token'),

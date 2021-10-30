@@ -1,0 +1,75 @@
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="stylesheet" href="styles_v1.css">
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="head">
+      <h1>Alkemy Disney Api</h1>
+    </div>
+    <div id="container"></div>
+<script>
+
+const params = new URLSearchParams(window.location.search);
+
+fetch('http://alkemy-disney-api.herokuapp.com/movies', {
+    headers: {
+    'Content-Type': 'application/json',
+    'Authorization': "Bearer " + params.get('token'),
+  }
+})  
+.then((response) => response.json())
+.then((data) => {
+  console.log('Success:', data);
+  printMovies(data);
+})
+.catch((error) => {
+  console.error('Error:', error);
+});
+
+function printMovies(movies) {
+  const container = document.getElementById('container')
+     movies.forEach(movie => {
+
+      fetch('http://alkemy-disney-api.herokuapp.com/movies/' + movie.id, {
+          headers: {
+          'Content-Type': 'application/json',
+          'Authorization': "Bearer " + params.get('token'),
+        }
+      })  
+      .then((response) => response.json())
+      .then((data2) => {
+        console.log('Success:', data2);
+        printMovieDet(data2);
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+
+
+  });
+
+  function printMovieDet(movie) {
+    container.innerHTML = `
+    ${container.innerHTML}
+    <div class="card">
+    <img src="${movie.image}"/>
+    <h2>
+        <span>${movie.title}</span>
+    </h2>
+    <h3>Genre</h3>
+      <span>${movie.genre.name}</span>
+    <h3>Main Character</h3>
+      <span>${movie.characters[0].name}</span>
+    </card>
+  `;
+  }
+}
+</script>
+</body>
+
+</html>

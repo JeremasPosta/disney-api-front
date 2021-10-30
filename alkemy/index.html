@@ -57,7 +57,9 @@ function printMovies(movies) {
     container.innerHTML = `
     ${container.innerHTML}
     <div class="card">
-    <img src="${movie.image}"/>
+    <div class="thumbnail">
+      <img src="${movie.image}"/>
+    </div>
     <h2>
         <span>${movie.title}</span>
     </h2>

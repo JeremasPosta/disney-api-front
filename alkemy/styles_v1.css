@@ -27,6 +27,7 @@ body{
 }
 
 .card{
+  
   width: 230px;
   margin-top: 100px;
   background-color: white;
@@ -36,6 +37,10 @@ body{
 
 .card img {
   width: 100%;
+}
+
+.thumbnail {
+  min-height: 60%;
 }
 
 .card span{

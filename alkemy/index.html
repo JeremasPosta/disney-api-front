@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -11,9 +12,12 @@
     <div class="head">
       <h1>Alkemy Disney Api</h1>
     </div>
-    <div id="container"></div>
-<script>
+    <div id="container"><div id="loading" style="display: in-line;">Loading, please wait...<br>This may take a while the first time.</div></div>
+    <footer>
+    Written by <a href="https://github.com/jeremasposta">@JeremasPosta</a>
+    </footer>
 
+<script>
 const params = new URLSearchParams(window.location.search);
 
 fetch('https://alkemy-disney-api.herokuapp.com/movies', {
@@ -33,25 +37,32 @@ fetch('https://alkemy-disney-api.herokuapp.com/movies', {
 
 function printMovies(movies) {
   const container = document.getElementById('container')
+  const requests = [];
      movies.forEach(movie => {
 
+     requests.push(  
       fetch('https://alkemy-disney-api.herokuapp.com/movies/' + movie.id, {
           headers: {
           'Content-Type': 'application/json',
           'Authorization': "Bearer " + params.get('token'),
         }
-      })  
-      .then((response) => response.json())
-      .then((data2) => {
-        console.log('Success:', data2);
-        printMovieDet(data2);
-      })
-      .catch((error) => {
-        console.error('Error:', error);
-      });
+      }).then((response) => response.json())
+     );
+     });
 
+     Promise.all(requests).then(responses => {
+       for (const data of responses) {
+         console.log('Success:', data);
+         printMovieDet(data);
+       }
+     }).catch(error => {
+       console.error('Error:', error);
+     })
+     .then(
+       document.getElementById("loading").style.display = "none"
+       );
 
-  });
+    
 
   function printMovieDet(movie) {
     container.innerHTML = `
@@ -71,6 +82,7 @@ function printMovies(movies) {
   `;
   }
 }
+
 </script>
 </body>
 
